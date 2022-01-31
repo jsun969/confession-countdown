@@ -2,16 +2,16 @@ lockfileVersion: 5.3
 
 specifiers:
   '@babel/core': ^7.16.12
-  '@chakra-ui/react': ^1.6.7
-  '@emotion/react': ^11
-  '@emotion/styled': ^11
+  '@chakra-ui/react': ^1.8.1
+  '@emotion/react': ^11.7.1
+  '@emotion/styled': ^11.6.0
   '@types/react': 17.0.20
   animate.css: ^4.1.1
   clsx: ^1.1.1
   dayjs: ^1.10.7
   eslint: 7.32.0
   eslint-config-next: 11.1.2
-  framer-motion: ^4
+  framer-motion: ^4.1.17
   next: 11.1.2
   react: 17.0.2
   react-dom: 17.0.2
