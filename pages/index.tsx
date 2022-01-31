@@ -1,53 +1,35 @@
-import 'animate.css';
 import { Box, Flex, Stack, Text } from '@chakra-ui/layout';
-import { GetServerSideProps, NextPage } from 'next';
+import { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import clsx from 'clsx';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import dayjs from 'dayjs';
+import { TimeStatus } from '../utils/constant';
+import { HomePagePropsType } from '../utils/types';
+import 'animate.css';
 
 dayjs.extend(customParseFormat);
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const date = process.env.DATE;
-  let name;
-  if (dayjs(date, 'YYYY-MM-DD HH:mm:ss').isBefore(dayjs())) {
-    name = process.env.TA;
-  } else {
-    name = '???';
-  }
-  return { props: { name, date } };
-};
-
-interface HomePageProps {
-  name: string;
-  date: string;
-}
-
-const HomePage: NextPage<HomePageProps> = ({ name, date }) => {
-  const endDate = dayjs(date, 'YYYY-MM-DD HH:mm:ss');
-  const [secondLeft, setSecondLeft] = useState<number>(endDate.diff(dayjs(), 'second'));
-
-  enum TimeStatus {
-    before,
-    now,
-    after,
-  }
+const HomePage: NextPage<HomePagePropsType> = ({ name, date }) => {
+  const enDate = dayjs(date, 'YYYY-MM-DD HH:mm:ss');
+  const [secondLeft, setSecondLeft] = useState<number>(enDate.diff(dayjs(), 'second'));
   const [timeStatus, setTimeStatus] = useState<TimeStatus>(name === '???' ? TimeStatus.before : TimeStatus.after);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setSecondLeft(endDate.diff(dayjs(), 'second'));
+      setSecondLeft(enDate.diff(dayjs(), 'second'));
     }, 1000);
-    return () => clearTimeout(timer);
-  });
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   useEffect(() => {
     if (secondLeft === 0) {
       setTimeStatus(TimeStatus.now);
     }
-  }, [secondLeft, TimeStatus]);
+  }, [secondLeft]);
 
   return (
     <>
@@ -59,12 +41,7 @@ const HomePage: NextPage<HomePageProps> = ({ name, date }) => {
       <main>
         <Flex alignItems="center" justifyContent="center" height="100vh" bgColor="pink.100">
           <Stack spacing={10} p={5}>
-            <Box
-              p={4}
-              borderRadius="xl"
-              bgColor="white"
-              className={clsx('animate__animated', 'animate__heartBeat', 'animate__infinite')}
-            >
+            <Box p={4} borderRadius="xl" bgColor="white" className={clsx('animate__animated', 'animate__heartBeat', 'animate__infinite')}>
               <Text fontSize="4xl" align="center">
                 我喜欢你, <strong>{name}</strong>
               </Text>
